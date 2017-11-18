@@ -14,7 +14,7 @@ do
     shift
 done
     
-DB=/tmp/bolaget.db
+DB=./bolaget.db
 sql()
 {
     echo "$*" | sqlite3 $DB
