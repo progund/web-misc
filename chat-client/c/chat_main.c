@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
       fprintf(stderr,"  %s <hostname> <port>\n", argv[0]);
       return 1;
     }
-
+  /* turn port number into an (unsigned) int */
   if (sscanf(argv[2], "%ud", &port)!=1)
     {
       fprintf(stderr,"invalid port: %s\n", argv[2]);
@@ -43,6 +43,9 @@ int main(int argc, char **argv) {
       return 1;
     }
   
+  /*
+   * Use our own feedback function
+   */
   chat_set_feedback_fun(&cc, feedback);
   if (ret!=CHAT_CLIENT_OK)
     {
@@ -50,6 +53,9 @@ int main(int argc, char **argv) {
       return 1;
     }
   
+  /*
+   * Enter chat - loop until bye or quit
+   */
   chat_loop(&cc);
   if (ret!=CHAT_CLIENT_OK)
     {
@@ -57,6 +63,9 @@ int main(int argc, char **argv) {
       return 1;
     }
 
+  /*
+   * Close the chat client
+   */
   chat_close(&cc);
   
   return 0;
