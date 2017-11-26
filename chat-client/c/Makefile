@@ -14,3 +14,10 @@ doc:
 	cd latex && make pdf
 
 pdf: doc
+
+clean:
+	rm -fr latex html
+	rm *.o *~ *.bak
+
+stat:
+	wc -l *.c *.h
