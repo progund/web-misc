@@ -7,12 +7,12 @@
 
 int feedback(const char *msg)
 {
-  return fprintf(stdout, "\n[CHAT] %s\n", msg);
+  return fprintf(stdout, "\r[CHAT] %s\n", msg);
 }
 
 int main(int argc, char **argv) {
   chat_client cc;
-  int port;
+  unsigned int port;
   int ret;
 
   /*
@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
       return 1;
     }
 
-  if (sscanf(argv[2], "%d", &port)!=1)
+  if (sscanf(argv[2], "%ud", &port)!=1)
     {
       fprintf(stderr,"invalid port: %s\n", argv[2]);
       return 2;
@@ -36,10 +36,26 @@ int main(int argc, char **argv) {
   /*
    * Init chat client values
    */
-  init_cc(&cc, argv[1], port);
+  ret = chat_init(&cc, argv[1], port);
+  if (ret!=CHAT_CLIENT_OK)
+    {
+      fprintf(stderr, "Failed initialising the client\n");
+      return 1;
+    }
+  
   chat_set_feedback_fun(&cc, feedback);
+  if (ret!=CHAT_CLIENT_OK)
+    {
+      fprintf(stderr, "Failed initialising the client\n");
+      return 1;
+    }
   
   chat_loop(&cc);
+  if (ret!=CHAT_CLIENT_OK)
+    {
+      fprintf(stderr, "Failed initialising the client\n");
+      return 1;
+    }
 
   chat_close(&cc);
   
