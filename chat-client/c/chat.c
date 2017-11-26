@@ -5,9 +5,14 @@
 #include "chat.h"
 
 
-#define BUF_SIZE 1000
+#define BUF_SIZE 1000 // buffer size for read
 
 
+/*
+ *
+ * Built in function for printing chat client info
+ *
+ */
 static void print_chat_client_info(chat_client *cc)
 {
   fprintf(stderr, "Chat client\n");
@@ -15,16 +20,31 @@ static void print_chat_client_info(chat_client *cc)
   fprintf(stderr, "* port:      %d\n", cc->port);
 }
 
-int print_msg(char *msg)
+/*
+ *
+ * Built in function for used feedback
+ *
+ */
+static int print_msg(char *msg)
 {
   return fprintf(stdout, "%s\n", msg);
 }
 
+/*
+ *
+ * See API
+ *
+ */
 void chat_set_feedback_fun(chat_client *cc, input_handler fun)
 {
   cc->feedback = fun;
 }
 
+/*
+ *
+ * See API
+ *
+ */
 int chat_init(chat_client* cc, char *hostname, unsigned int port)
 {
   if (cc==NULL || hostname==NULL)
@@ -40,6 +60,11 @@ int chat_init(chat_client* cc, char *hostname, unsigned int port)
   return CHAT_CLIENT_OK;
 }
 
+/*
+ *
+ * internal function. opens and sets up a socket
+ *
+ */
 static int open_socket(chat_client* cc)
 {
   if (cc==NULL)
@@ -91,6 +116,11 @@ static int open_socket(chat_client* cc)
   return CHAT_CLIENT_OK;
 }
 
+/*
+ *
+ * See API
+ *
+ */
 int chat_loop(chat_client *cc)
 {
   int written;
@@ -155,8 +185,16 @@ int chat_loop(chat_client *cc)
     
 }
 
+/*
+ * internal macro for checking strings
+ */
 #define COMP_STR(a,b) strncmp(a, b, strlen(a))
 
+/*
+ *
+ * See API
+ *
+ */
 int chat_handle_input(chat_client *cc, char *msg)
 {
   int written;
@@ -182,6 +220,11 @@ int chat_handle_input(chat_client *cc, char *msg)
   return CHAT_CLIENT_OK;  
 }
 
+/*
+ *
+ * See API
+ *
+ */
 void chat_close(chat_client *cc)
 {
   close(cc->sockfd);
