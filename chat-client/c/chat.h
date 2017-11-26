@@ -94,7 +94,7 @@ int chat_loop(chat_client *cc);
  * You can change the built in printer (stdout) to any function you want.
  *
  * @param cc - a pointer to chat_client
- * @param cc - a pointer to a function (input_handler - see above)
+ * @param fun - a pointer to a function (input_handler - see above)
  * @return void
  */
 void chat_set_feedback_fun(chat_client *cc, input_handler fun);
