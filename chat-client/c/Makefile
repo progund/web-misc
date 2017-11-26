@@ -24,3 +24,7 @@ clean:
 
 stat:
 	wc -l *.c *.h
+
+valgrind:
+	valgrind ./$(CHAT_PROG) localhost 1066
+
