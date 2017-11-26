@@ -123,7 +123,7 @@ static int open_socket(chat_client* cc)
  */
 int chat_loop(chat_client *cc)
 {
-  int written;
+  int bytes;
   char buf[BUF_SIZE];
   int ret;
 
@@ -157,12 +157,12 @@ int chat_loop(chat_client *cc)
         {
           /* print the server's reply */
           bzero(buf, BUF_SIZE);
-          written = (int)read(cc->sockfd, buf, BUF_SIZE);
-          if (written < 0)
+          bytes = (int)read(cc->sockfd, buf, BUF_SIZE);
+          if (bytes < 0)
             {
               fprintf(stderr, "ERROR reading from socket");
             }
-          if (written == 0)
+          if (bytes == 0)
             {
               cc->feedback("Leaving since user typed 'bye'");
               return CHAT_CLIENT_LEAVE;
@@ -172,6 +172,7 @@ int chat_loop(chat_client *cc)
       else
         {
           bzero(buf, BUF_SIZE);
+          
           fgets(buf, BUF_SIZE, stdin);
           
           ret = chat_handle_input(cc, buf);
