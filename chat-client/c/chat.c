@@ -25,7 +25,7 @@ void chat_set_feedback_fun(chat_client *cc, input_handler fun)
   cc->feedback = fun;
 }
 
-int init_cc(chat_client* cc, char *hostname, unsigned int port)
+int chat_init(chat_client* cc, char *hostname, unsigned int port)
 {
   if (cc==NULL || hostname==NULL)
     {
@@ -70,8 +70,8 @@ static int open_socket(chat_client* cc)
   cc->serveraddr.sin_family = AF_INET;
   bcopy((char *)cc->server->h_addr, 
         (char *)&(cc->serveraddr.sin_addr.s_addr),
-        cc->server->h_length);
-  cc->serveraddr.sin_port = htons(cc->port);
+        (size_t)cc->server->h_length);
+  cc->serveraddr.sin_port = htons((short unsigned int)cc->port);
 
   /* connect: create a connection with the server */
   if (connect(cc->sockfd,
@@ -86,14 +86,14 @@ static int open_socket(chat_client* cc)
   //  FD_ZERO(&master);
   FD_ZERO(&(cc->read_fds));
     
-  cc->nfds = cc->sockfd +2;
+  cc->nfds = (unsigned int)cc->sockfd +2;
     
   return CHAT_CLIENT_OK;
 }
 
 int chat_loop(chat_client *cc)
 {
-  int n;
+  int written;
   char buf[BUF_SIZE];
   int ret;
 
@@ -118,20 +118,24 @@ int chat_loop(chat_client *cc)
       FD_SET(STDIN_FILENO,&(cc->read_fds));
       FD_SET(cc->sockfd,&(cc->read_fds)); 
 
-      if (select(cc->nfds,&(cc->read_fds),NULL,NULL,NULL) == -1){
+      if (select((int)cc->nfds,&(cc->read_fds),NULL,NULL,NULL) == -1){
         fprintf(stderr, "select failed....");
         return CHAT_CLIENT_ERROR;
       }
 
       if (FD_ISSET(cc->sockfd, &(cc->read_fds)))
         {
-          
           /* print the server's reply */
           bzero(buf, BUF_SIZE);
-          n = read(cc->sockfd, buf, BUF_SIZE);
-          if (n < 0)
+          written = (int)read(cc->sockfd, buf, BUF_SIZE);
+          if (written < 0)
             {
               fprintf(stderr, "ERROR reading from socket");
+            }
+          if (written == 0)
+            {
+              cc->feedback("Leaving since user typed 'bye'");
+              return CHAT_CLIENT_LEAVE;
             }
           cc->feedback(buf);
         }
@@ -140,7 +144,7 @@ int chat_loop(chat_client *cc)
           bzero(buf, BUF_SIZE);
           fgets(buf, BUF_SIZE, stdin);
           
-          ret = handle_input(cc, buf);
+          ret = chat_handle_input(cc, buf);
           if (ret==CHAT_CLIENT_LEAVE)
             {
               return ret;
@@ -153,7 +157,7 @@ int chat_loop(chat_client *cc)
 
 #define COMP_STR(a,b) strncmp(a, b, strlen(a))
 
-int handle_input(chat_client *cc, char *msg)
+int chat_handle_input(chat_client *cc, char *msg)
 {
   int written;
   
@@ -167,7 +171,7 @@ int handle_input(chat_client *cc, char *msg)
       return CHAT_CLIENT_LEAVE;
     }
 
-  written = write(cc->sockfd, msg, strlen(msg));
+  written = (int)write(cc->sockfd, msg, strlen(msg));
   if (written < 0)
     {
       fprintf(stderr,
