@@ -4,6 +4,17 @@
 #include <netinet/in.h>
 #include <netdb.h>
 
+/**
+ * @file chat.h
+ * @author Henrik Sandklef, Rikard Fröberg
+ * @date 26 nov 2017
+ */
+
+/**
+ * @brief Return values
+ *
+ * Return values used by the chat API.
+ */
 enum
   {
     CHAT_CLIENT_OK,
@@ -14,8 +25,20 @@ enum
     CHAT_CLIENT_LEAVE
   };
 
+/**
+ * @brief Function pointer for feedback
+ *
+ * Function pointer for feedback. You can make the chat API feedback
+ * your code by registering a function using.
+ */
 typedef int (*input_handler)(const char *str);
 
+/**
+ * @brief Data structure for chat client
+ *
+ * This structure contains everything needed for networking and giving
+ * feedback to the user.
+ */
 typedef struct chat_client_
 {
   int sockfd;
@@ -31,12 +54,61 @@ typedef struct chat_client_
   
 } chat_client ;
 
-int init_cc(chat_client* cc, char *hostname, unsigned int port);
+/** 
+ * @brief Initialise the struct with hostname and port number.
+ *
+ * This function sets up the struct, using hostname and port number. 
+ *
+ * @param cc - a pointer to chat_client
+ * @param hostname - name of the server to connect to
+ * @param port - port number of the server to tonnect to
+ * @return an integer idicating success (CHAT_CLIENT_OK e(0)) or error
+ */
+int chat_init(chat_client* cc, char *hostname, unsigned int port);
 
+/** 
+ * @brief Closes the chat session pointed to by the struct.
+ *
+ * This function closes the chat associated with the struct.
+ *
+ * @param cc - a pointer to chat_client
+ * @return void
+ */
 void chat_close(chat_client *cc);
 
+/** 
+ * @brief Start the chat
+ *
+ * This function starts up the chat client. It will listen for input
+ * from user on stdin and provide feedback to the user via stdout.
+ *
+ * @param cc - a pointer to chat_client
+ * @return an integer idicating success (CHAT_CLIENT_OK e(0)) or error
+ */
 int chat_loop(chat_client *cc);
 
-int handle_input(chat_client *cc, char *msg);
 
+/** 
+ * @brief Sets the feedback funtion used to give feedback to the user.
+ *
+ * You can change the built in printer (stdout) to any function you want.
+ *
+ * @param cc - a pointer to chat_client
+ * @param cc - a pointer to a function (input_handler - see above)
+ * @return void
+ */
 void chat_set_feedback_fun(chat_client *cc, input_handler fun);
+
+
+/** 
+ * @brief handke user input
+ *
+ * This function either writes a message to the chat server or handles
+ * internal commands:
+ *  .quit - for leaving the chat session
+ *
+ * @param cc - a pointer to chat_client
+ * @param msg - string to handle
+ * @return an integer idicating success (CHAT_CLIENT_OK e(0)) or error
+ */
+int chat_handle_input(chat_client *cc, char *msg);
