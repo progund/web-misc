@@ -19,7 +19,18 @@ See the header file `chat.h` for a description of the API.
 
 `gcc chat.c chat_main.c -o chat`
 
+or
+
+`make` - if you have make installed
+
 ## Execute instruction
 
 `./chat localhost 1066 `
+
+or
+
+`make run` - if you have make installed
+
+
+
 
