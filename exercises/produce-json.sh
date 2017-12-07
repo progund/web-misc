@@ -51,7 +51,7 @@ http_header()
 {
     echo "HTTP/1.0 200 OK"
     echo "Connection: close"
-    echo "Date: $(date)"
+    echo "Date: $(LANG=EN date)"
     echo "Server: netcat special deal"
     echo "Content-Type: application/json"
     echo "Cache-Control: max-age=60"
