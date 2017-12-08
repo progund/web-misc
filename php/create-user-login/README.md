@@ -44,6 +44,11 @@ $ echo $?
 # Insert a new user (yes, the password should be hashed in real life...)
 $ ./insert_user.sh nisse nisse@gu.se topsikrit "Nisse Hult"
 
+# Get all users from DB to standard out:
+$ ./get_all_users.sh
+id|username|email|password|name
+1|rille|rille@gu.se|sikrit|Rikardo Blondino
+2|henke|henke@gu.se|sikriter|Henke Ponken
 ```
 
 
