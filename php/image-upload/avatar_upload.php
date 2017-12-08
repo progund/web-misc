@@ -2,6 +2,9 @@
 // In PHP versions earlier than 4.1.0, $HTTP_POST_FILES should be used instead
 // of $_FILES.
 
+// Most of the below is taken without shame from php.net and adopted
+// for this small example
+
 // Fake that we have a session with the username stored:
 session_start();
 $_SESSION["username"] = "rille";
