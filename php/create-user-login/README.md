@@ -12,6 +12,15 @@ We, the authors, don't even claim to know the slightest bit about php!
 
 We only wanted to show some small scripts to use in conjunction with php and a database setup.
 
+The scripts assumes PHP running as a server on localhost:1066
+
+You can start a php server like this:
+```bash
+php -S localhost:1066
+```
+
+Do so in the same directory as the examples.
+
 The scripts:
 
 ```bash
