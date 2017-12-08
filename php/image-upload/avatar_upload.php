@@ -23,6 +23,9 @@ $username = $_SESSION["username"];
 // username.jpg
 $uploaddir = 'avatars/';
 $original_name = $uploaddir . basename($_FILES['avatar']['name']);
+// Assumption: the file is a png image file - you should get the suffix
+// instead, and reject non-image files!
+// You can use the $_FILES["type"] to get the content-type
 $uploadfile = $uploaddir . basename($username . ".png");
 
 // Try to move the temporary file to the correct place and name:
