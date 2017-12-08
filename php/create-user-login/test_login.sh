@@ -13,7 +13,7 @@ then
     echo "Server up, 200 OK";
 else
     echo "Bad response: $status";
-    exit 1;
+    exit 2;
 fi
 
 curl -s "http://localhost:1066/login.php?username=${user}&password=${pw}" | grep successful &> /dev/null
