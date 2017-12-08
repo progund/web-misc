@@ -20,6 +20,30 @@ Usage: ./insert_user.sh <username> <email> <password> <name>
 
 $ ./test_login.sh
 USAGE: ./test_login.sh <user> <password>
+
+# Testing with wrong pw:
+$ ./test_login.sh rille wrongpw
+Server up, 200 OK
+Login unsuccessful
+$ echo $?
+1
+
+# Tesing with correct pw:
+$ ./test_login.sh rille sikrit
+Server up, 200 OK
+Login successful
+$ echo $?
+0
+
+# If server is down:
+$ ./test_login.sh rille somepw
+Bad response: 500 Can't connect to localhost:1066
+$ echo $?
+2
+
+# Insert a new user (yes, the password should be hashed in real life...)
+$ ./insert_user.sh nisse nisse@gu.se topsikrit "Nisse Hult"
+
 ```
 
 
