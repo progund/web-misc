@@ -30,7 +30,7 @@ try {
     if($num == 0) {
         echo "Wrong username or password. <a href=\"login.html\">Try again</a><br>\n";
     } else {
-        echo "Welcome $username !<br>\n";
+        echo "Welcome $user !<br>\n";
         echo "Login successful!<br>\n";
     }
 

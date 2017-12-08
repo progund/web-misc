@@ -25,7 +25,7 @@ try {
     if($num != 0) {
         echo "Username taken";
     } else {
-        echo "Welcome $username !<br>\n";
+        echo "Welcome $user !<br>\n";
         echo "Please enter your information below...<br>\n";
         echo "...here's a good place to put a form for name, email etc<br>\n";
     }
