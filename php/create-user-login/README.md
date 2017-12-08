@@ -14,12 +14,12 @@ We only wanted to show some small scripts to use in conjunction with php and a d
 
 The scripts:
 
-'''bash
+```bash
 $ ./insert_user.sh
 Usage: ./insert_user.sh <username> <email> <password> <name>
 
 $ ./test_login.sh
 USAGE: ./test_login.sh <user> <password>
-'''
+```
 
 
