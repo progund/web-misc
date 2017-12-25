@@ -2,6 +2,10 @@ package se.yrgo.schedule;
 
 import java.sql.*;
 
+/**
+ * A class with a helper method to get a ResultSet from the database.
+ * Also "handles" the Connection to the DB.
+ */
 public class DBHelper {
 
   private static Connection con;

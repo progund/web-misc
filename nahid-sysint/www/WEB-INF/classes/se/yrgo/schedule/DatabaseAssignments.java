@@ -5,6 +5,9 @@ import java.util.List;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * An implementation of the Assignments interface
+ */
 public class DatabaseAssignments implements Assignments {
 
   private static final String SELECT_ALL =

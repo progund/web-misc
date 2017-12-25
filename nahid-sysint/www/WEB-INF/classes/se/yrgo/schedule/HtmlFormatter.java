@@ -1,6 +1,12 @@
 package se.yrgo.schedule;
 
 import java.util.List;
+
+/**
+ * A class implementing the Formatter interface. Formats a List of Assignment
+ * to HTML.
+ *
+ */
 public class HtmlFormatter implements Formatter {
   public String format(List<Assignment> assignments) {
     StringBuffer html = new StringBuffer("<!DOCTYPE html>\n")
