@@ -32,5 +32,6 @@ content()
 
 header
 content
-
+# close with EOF
+exec 1>&- 
 
