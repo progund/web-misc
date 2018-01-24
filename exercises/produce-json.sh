@@ -33,7 +33,7 @@ end_json()
 product_json()
 {
     CNT=0
-    sql "SELECT name, price, alcohol FROM product $LIMIT_ARG" | while read LINE
+    sql "SELECT name, price, alcohol FROM product $LIMIT_ARG;" | while read LINE
     do
         if [ "$LINE" = "" ] ; then break ; fi
         if [ $CNT -ne 0 ] ; then echo ","; fi
