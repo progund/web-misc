@@ -30,9 +30,8 @@ public class ScheduleServlet extends HttpServlet {
       // Set the content type (using the parser)
       response.setContentType(parser.contentType());
       // To write the response, we're using a PrintWriter
-      PrintWriter out =
-        new PrintWriter(new OutputStreamWriter(response.getOutputStream(),
-                                               UTF_8), true);
+      response.setCharacterEncoding(UTF_8.name());
+      PrintWriter out = response.getWriter();
       // Get access to the database, using a factory
       // Assignments is an interface - see Assignments interface
       Assignments db = AssignmentsFactory.getAssignments();
