@@ -13,9 +13,8 @@ public class HelloServlet extends HttpServlet {
       throws ServletException, IOException {
       request.setCharacterEncoding(UTF_8.name());
       response.setContentType("text/html;charset="+UTF_8.name());
-      PrintWriter out =
-        new PrintWriter(new OutputStreamWriter(response.getOutputStream(),
-                                               UTF_8), true);
+      response.setCharacterEncoding(UTF_8.name());
+      PrintWriter out = response.getWriter();
       out.println("<!DOCTYPE html>");
       out.println("<html lang=\"en\">");
       out.println("<head><title>Hello Servlet!</title></head>");
