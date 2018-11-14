@@ -30,8 +30,9 @@ content()
     echo "</html>"
 }
 
+CONTENT=$(content)
+CLENGTH=$(echo $CONTENT | wc -c)
+LENGTH=$(( $CLENGTH + 4  ))
 header
-content
 # close with EOF
 exec 1>&- 
-
