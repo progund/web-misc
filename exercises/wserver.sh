@@ -1,38 +1,40 @@
 #!/bin/bash
 
 
+content()
+{
+    echo "<!DOCTYPE html>"
+    echo "<html>"
+    echo ""
+    echo "<head>"
+    echo "<title>Page Title</title>"
+    echo "</head>"
+    echo ""
+    echo "<body>"
+    echo "Current date is: $(date)"
+    echo "</body>"
+    echo ""
+    echo "</html>"
+}
 
-#
-# Function to output header
-#
 header()
 {
-    echo "HTTP/1.0 200 OK"
+    echo "HTTP/1.1 200 OK"
     echo "Connection: close"
     echo "Date: $(date)"
     echo "Server: netcat special deal"
+    echo "Content-Length: $LENGTH"
     echo "Content-Type: text/html; charset=utf-8"
     echo "Cache-Control: max-age=60"
     echo ""
     echo ""
-}
-
-#
-# Function to outout content 
-#
-content()
-{
-    echo "<html>"
-    echo "<head><title>Some web page title</title></head>"
-    echo "<body>"
-    echo "<p>Hello HTTP</p>"
-    echo "</body>"
-    echo "</html>"
+    echo ""
 }
 
 CONTENT=$(content)
 CLENGTH=$(echo $CONTENT | wc -c)
-LENGTH=$(( $CLENGTH + 4  ))
+LENGTH=$(( $CLENGTH + 1 ))
 header
-# close with EOF
-exec 1>&- 
+echo ${CONTENT}
+exec 1>&-
+
