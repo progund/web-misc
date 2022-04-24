@@ -17,7 +17,7 @@ done
 DB=./bolaget.db
 sql()
 {
-    echo "$*" | sqlite3 $DB
+    echo -e "$*" | sqlite3 $DB
 }
 
 init_json()
@@ -32,14 +32,14 @@ end_json()
 
 product_json()
 {
-    CNT=0
-    sql "SELECT name, price, alcohol FROM product $LIMIT_ARG;" | while read LINE
+    COMMA=false
+    sql ".headers off\n.mode list\nSELECT name, price, alcohol FROM product $LIMIT_ARG;" | while read LINE
     do
         if [ "$LINE" = "" ] ; then break ; fi
-        if [ $CNT -ne 0 ] ; then echo ","; fi
+        if $COMMA ; then echo ","; fi
         echo $LINE | \
             awk 'BEGIN {FS="|"} { printf "  {\n    \"name\" : \"%s\",\n    \"price\" : \"%s\",\n    \"alcohol\" : \"%s\"\n  }", $1, $2, $3}'
-        CNT=$((CNT + 1))
+        COMMA=true
     done
     echo
 }
