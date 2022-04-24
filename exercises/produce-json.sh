@@ -39,7 +39,9 @@ product_json()
 {
     # No comma before the first line
     COMMA=false
+    # We don't want headers and we want columns separated by "|"
     SQLITE_DIRECTIVES=".headers off\n.mode list\n"
+    
     sql "${SQLITE_DIRECTIVES}SELECT name, price, alcohol FROM product $LIMIT_ARG;" | while read -r LINE
     do
         # If we are on the last line, then just exit the loop
