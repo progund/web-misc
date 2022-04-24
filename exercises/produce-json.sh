@@ -1,18 +1,23 @@
 #!/bin/bash
 
+# Without argument, you will get 20 products
 LIMIT_ARG=" LIMIT 20"
-while [ "$1" != "" ]
-do
-    case "$1" in
+
+# If there's an argument to the script,
+#+then parse the argument and update the
+#+limit string.
+if [[ $# == 1 ]]
+then
+    LIMIT=$1
+    case "$LIMIT" in
         "--all")
             LIMIT_ARG=""
             ;;
         *)
-            LIMIT_ARG=" LIMIT $1"
+            LIMIT_ARG="LIMIT $LIMIT"
             ;;
     esac
-    shift
-done
+fi
     
 DB=./bolaget.db
 sql()
@@ -32,14 +37,23 @@ end_json()
 
 product_json()
 {
+    # No comma before the first line
     COMMA=false
-    sql ".headers off\n.mode list\nSELECT name, price, alcohol FROM product $LIMIT_ARG;" | while read LINE
+    SQLITE_DIRECTIVES=".headers off\n.mode list\n"
+    sql "${SQLITE_DIRECTIVES}SELECT name, price, alcohol FROM product $LIMIT_ARG;" | while read -r LINE
     do
+        # If we are on the last line, then just exit the loop
         if [ "$LINE" = "" ] ; then break ; fi
+        
+        # If we are after the first json object, add a comma and newline
         if $COMMA ; then echo ","; fi
-        echo $LINE | \
+
+        # Print json object wihthout newline
+        echo "$LINE" | \
             awk 'BEGIN {FS="|"} { printf "  {\n    \"name\" : \"%s\",\n    \"price\" : \"%s\",\n    \"alcohol\" : \"%s\"\n  }", $1, $2, $3}'
-        COMMA=true
+        
+        # from here on, we want a comma and newline before the next object
+        COMMA=true 
     done
     echo
 }
@@ -58,8 +72,10 @@ http_header()
     echo ""
 }
 
-http_header
-init_json
-product_json
-end_json
+# MAIN - script begins here
+
+http_header   # HTTP headers showing that the content is JSON
+init_json     # output a [
+product_json  # output a JSON object for each row in the database
+end_json      # output a ]
 
